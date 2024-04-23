@@ -5,13 +5,12 @@ import {
     DB_PASSWORD,
     DB_USER,
     DB_PORT
-  } from 'settings.js'
+} from './settings.js'
   
 export const pool = createPool({
-    hostname:  DB_HOST,
-    user:DB_NAME,
+    host: DB_HOST,
+    user: DB_USER,
     password: DB_PASSWORD,
-    port: DB_USER,
-    database: DB_PORT,
-})
-
+    port: DB_PORT,
+    database: DB_NAME
+});
