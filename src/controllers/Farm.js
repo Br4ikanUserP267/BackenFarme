@@ -15,9 +15,9 @@ export const getFarms = async (req, res) => {
 // Método POST para agregar un nuevo registro
 // Método POST para agregar un nuevo registro
 export const postFarm = async (req, res) => {
-    const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate } = req.body; // Corregir OwenerBirthDate
+    const { Id,Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate } = req.body; // Corregir OwenerBirthDate
     try {
-      await pool.query("INSERT INTO Farms (Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate) VALUES (?, ?, ?, ?, ?, ?, ?)", [Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate]); // Corregir OwenerBirthDate
+      await pool.query("INSERT INTO Farms (Id, Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [Id,Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate]); // Corregir OwenerBirthDate
       res.send("Registro agregado correctamente");
     } catch (err) {
       console.error(err);
