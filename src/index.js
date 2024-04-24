@@ -1,4 +1,4 @@
 import app from "./app.js";
-
-app.listen(80);
-console.log(`Server on port ${80}`);
+import { PORT } from "./db/settings.js";
+app.listen(PORT);
+console.log(`Server on port ${PORT}`);
