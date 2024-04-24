@@ -13,7 +13,5 @@ router.post('/farms', postFarm);
 
 router.put('/farms/:id', updateFarm);
 
-router.get("/", (req, res) => {
-    res.send("Hola Mundo");
-  });
+
 export default router;

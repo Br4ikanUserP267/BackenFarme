@@ -13,16 +13,18 @@ export const getFarms = async (req, res) => {
   
 
 // Método POST para agregar un nuevo registro
+// Método POST para agregar un nuevo registro
 export const postFarm = async (req, res) => {
-  const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate } = req.body;
-  try {
-    await pool.query("INSERT INTO Farms (Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate) VALUES (?, ?, ?, ?, ?, ?, ?)", [Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate]);
-    res.send("Registro agregado correctamente");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error de servidor");
+    const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate } = req.body; // Corregir OwenerBirthDate
+    try {
+      await pool.query("INSERT INTO Farms (Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate) VALUES (?, ?, ?, ?, ?, ?, ?)", [Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate]); // Corregir OwenerBirthDate
+      res.send("Registro agregado correctamente");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error de servidor");
+    }
   }
-}
+  
 // Método GET para obtener una granja por su ID
 export const getFarmById = async (req, res) => {
     const id = req.params.id;
@@ -42,16 +44,17 @@ export const getFarmById = async (req, res) => {
 
 // Método PUT para actualizar un registro
 export const updateFarm = async (req, res) => {
-  const id = req.params.id;
-  const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate } = req.body;
-  try {
-    await pool.query("UPDATE Farms SET Name=?, Location=?, PhoneNumber=?, OwnerName=?, OwnerLastname=?, OwnerId=?, OwnerBirthDate=? WHERE Id=?", [Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate, id]);
-    res.send("Registro actualizado correctamente");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error de servidor");
+    const id = req.params.id;
+    const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate } = req.body; // Corregir OwenerBirthDate
+    try {
+      await pool.query("UPDATE Farms SET Name=?, Location=?, PhoneNumber=?, OwnerName=?, OwnerLastname=?, OwnerId=?, OwenerBirthDate=? WHERE Id=?", [Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate, id]); // Corregir OwenerBirthDate
+      res.send("Registro actualizado correctamente");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error de servidor");
+    }
   }
-}
+  
 
 // Método DELETE para eliminar un registro
 export const deleteFarm = async (req, res) => {
