@@ -5,9 +5,7 @@ import cors from "cors";
 //Here we inizialize the app with express
 const app = express();
 
-
 //Here we going to import the routes 
-
 import FarmRoutes from './routes/Farm.routes.js'
 
 

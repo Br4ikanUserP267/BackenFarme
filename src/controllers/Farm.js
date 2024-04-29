@@ -1,6 +1,5 @@
 import { pool } from "../db/db.js";
 
-// Método GET para obtener todos los registros
 export const getFarms = async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM Farms')
@@ -12,8 +11,7 @@ export const getFarms = async (req, res) => {
   }
   
 
-// Método POST para agregar un nuevo registro
-// Método POST para agregar un nuevo registro
+
 export const postFarm = async (req, res) => {
     const { Id,Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate } = req.body; // Corregir OwenerBirthDate
     try {
@@ -25,7 +23,6 @@ export const postFarm = async (req, res) => {
     }
   }
   
-// Método GET para obtener una granja por su ID
 export const getFarmById = async (req, res) => {
     const id = req.params.id;
     try {
@@ -42,7 +39,6 @@ export const getFarmById = async (req, res) => {
   }
   
 
-// Método PUT para actualizar un registro
 export const updateFarm = async (req, res) => {
     const id = req.params.id;
     const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwenerBirthDate } = req.body; // Corregir OwenerBirthDate
@@ -56,7 +52,6 @@ export const updateFarm = async (req, res) => {
   }
   
 
-// Método DELETE para eliminar un registro
 export const deleteFarm = async (req, res) => {
   const id = req.params.id;
   try {
