@@ -8,6 +8,7 @@ const app = express();
 //Here we going to import the routes 
 import FarmRoutes from './routes/Farm.routes.js';
 import StaffRoutes from './routes/Staff.routes.js';
+import TaskRoutes from './routes/Task.routes.js';
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -15,5 +16,6 @@ app.use(cors());
 
 app.use(FarmRoutes);
 app.use(StaffRoutes);
+app.use(TaskRoutes);
   
 export default app;
