@@ -9,7 +9,7 @@ router.get('/staff/:id', getStaffById);
 router.post('/staff', postStaff);
 router.put('/staff/:id', updateStaff);
 router.delete('/staff/:id', deleteStaff);
-router.get("/staff/:farmId",getStaffByFarmId)
+router.get("/staff_byFarmId/:farmId",getStaffByFarmId)
 // Login route
 router.post('/staff/login', loginStaff);
 
