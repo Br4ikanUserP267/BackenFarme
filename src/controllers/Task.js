@@ -42,7 +42,8 @@ export const getTasksByStaffId = async (req, res) => {
 
 // Create a new task
 export const postTask = async (req, res) => {
-    const { Name, Description, Status, IsDeleted, StaffId } = req.body;
+    const { Name, Description, Status, StaffId } = req.body; // Removed IsDeleted from here
+    const IsDeleted = 0; // Set IsDeleted to 0 by default
     try {
         await pool.query("INSERT INTO Tasks (Name, Description, Status, IsDeleted, StaffId) VALUES (?, ?, ?, ?, ?)", [Name, Description, Status, IsDeleted, StaffId]);
         res.send("Tarea agregada correctamente");
@@ -51,6 +52,7 @@ export const postTask = async (req, res) => {
         res.status(500).send("Error de servidor");
     }
 };
+
 
 // Update a task
 export const updateTask = async (req, res) => {
