@@ -11,21 +11,24 @@ export const getStaff = async (req, res) => {
         res.json(rows);
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error de servidor");
+        res.status(500).send("Server error");
     }
 };
 
 // Add new staff
 export const postStaff = async (req, res) => {
-    const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber } = req.body;
+    const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber, Id_farm } = req.body;
     try {
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(Password, 10);
-        await pool.query("INSERT INTO Staff (Name, BirthDate, IsDeleted, Username, Password, IdCardNumber) VALUES (?, ?, ?, ?, ?, ?)", [Name, BirthDate, IsDeleted, Username, hashedPassword, IdCardNumber]);
-        res.send("Registro de personal agregado correctamente");
+        await pool.query(
+            "INSERT INTO Staff (Name, BirthDate, IsDeleted, Username, Password, IdCardNumber, Id_farm) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+            [Name, BirthDate, IsDeleted, Username, hashedPassword, IdCardNumber, Id_farm]
+        );
+        res.send("Staff record added successfully");
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error de servidor");
+        res.status(500).send("Server error");
     }
 };
 
@@ -37,26 +40,29 @@ export const getStaffById = async (req, res) => {
         if (staff.length > 0) {
             res.json(staff[0]);
         } else {
-            res.status(404).send("Personal no encontrado");
+            res.status(404).send("Staff not found");
         }
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error de servidor");
+        res.status(500).send("Server error");
     }
 };
 
 // Update staff
 export const updateStaff = async (req, res) => {
     const id = req.params.id;
-    const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber } = req.body;
+    const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber, Id_farm } = req.body;
     try {
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(Password, 10);
-        await pool.query("UPDATE Staff SET Name=?, BirthDate=?, IsDeleted=?, Username=?, Password=?, IdCardNumber=? WHERE Id=?", [Name, BirthDate, IsDeleted, Username, hashedPassword, IdCardNumber, id]);
-        res.send("Registro de personal actualizado correctamente");
+        await pool.query(
+            "UPDATE Staff SET Name=?, BirthDate=?, IsDeleted=?, Username=?, Password=?, IdCardNumber=?, Id_farm=? WHERE Id=?", 
+            [Name, BirthDate, IsDeleted, Username, hashedPassword, IdCardNumber, Id_farm, id]
+        );
+        res.send("Staff record updated successfully");
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error de servidor");
+        res.status(500).send("Server error");
     }
 };
 
@@ -65,10 +71,10 @@ export const deleteStaff = async (req, res) => {
     const id = req.params.id;
     try {
         await pool.query("DELETE FROM Staff WHERE Id=?", [id]);
-        res.send("Registro de personal eliminado correctamente");
+        res.send("Staff record deleted successfully");
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error de servidor");
+        res.status(500).send("Server error");
     }
 };
 
@@ -83,37 +89,15 @@ export const loginStaff = async (req, res) => {
                 const token = jwt.sign({ id: staff[0].Id }, JWT_SECRET, { expiresIn: '1h' });
                 res.json({ token });
             } else {
-                res.status(401).send("Contraseña incorrecta");
+                res.status(401).send("Incorrect password");
             }
         } else {
-            res.status(404).send("Usuario no encontrado");
+            res.status(404).send("User not found");
         }
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error de servidor");
+        res.status(500).send("Server error");
     }
 };
 
 // Associate staff with a farm
-export const addFarmToStaff = async (req, res) => {
-    const { IdStaff, IdFarms } = req.body;
-    try {
-        await pool.query("INSERT INTO Farm_has_Staff (IdStaff, IdFarms) VALUES (?, ?)", [IdStaff, IdFarms]);
-        res.send("Staff asociado a la granja correctamente");
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error de servidor");
-    }
-};
-
-// Get farms by staff ID
-export const getFarmsByStaffId = async (req, res) => {
-    const id = req.params.id;
-    try {
-        const [farms] = await pool.query("SELECT * FROM Farm_has_Staff WHERE IdStaff = ?", [id]);
-        res.json(farms);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error de servidor");
-    }
-};

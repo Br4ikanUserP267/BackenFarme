@@ -1,5 +1,5 @@
 import express from 'express';
-import { getStaff, getStaffById, postStaff, updateStaff, deleteStaff, loginStaff, addFarmToStaff, getFarmsByStaffId } from '../controllers/Staff.js';
+import { getStaff, getStaffById, postStaff, updateStaff, deleteStaff, loginStaff} from '../controllers/Staff.js';
 
 const router = express.Router();
 
@@ -13,8 +13,5 @@ router.delete('/staff/:id', deleteStaff);
 // Login route
 router.post('/staff/login', loginStaff);
 
-// Farm-Staff relationship routes
-router.post('/staff/farm', addFarmToStaff);
-router.get('/staff/:id/farms', getFarmsByStaffId);
 
 export default router;
