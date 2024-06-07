@@ -1,5 +1,7 @@
 import { pool } from "../db/db.js";
+import bcrypt from 'bcrypt';
 
+// Get all staff
 export const getStaff = async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM Staff');
@@ -10,10 +12,13 @@ export const getStaff = async (req, res) => {
     }
 };
 
+// Add new staff
 export const postStaff = async (req, res) => {
-    const { Id, Name, BirthDate, Farm_Id, IsDeleted, Username, Password } = req.body;
+    const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber } = req.body;
     try {
-        await pool.query("INSERT INTO Staff (Id, Name, BirthDate, Farm_Id, IsDeleted, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?)", [Id, Name, BirthDate, Farm_Id, IsDeleted, Username, Password]);
+        // Hash the password before storing it
+        const hashedPassword = await bcrypt.hash(Password, 10);
+        await pool.query("INSERT INTO Staff (Name, BirthDate, IsDeleted, Username, Password, IdCardNumber) VALUES (?, ?, ?, ?, ?, ?)", [Name, BirthDate, IsDeleted, Username, hashedPassword, IdCardNumber]);
         res.send("Registro de personal agregado correctamente");
     } catch (err) {
         console.error(err);
@@ -21,6 +26,7 @@ export const postStaff = async (req, res) => {
     }
 };
 
+// Get staff by ID
 export const getStaffById = async (req, res) => {
     const id = req.params.id;
     try {
@@ -36,11 +42,14 @@ export const getStaffById = async (req, res) => {
     }
 };
 
+// Update staff
 export const updateStaff = async (req, res) => {
     const id = req.params.id;
-    const { Name, BirthDate, Farm_Id, IsDeleted, Username, Password } = req.body;
+    const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber } = req.body;
     try {
-        await pool.query("UPDATE Staff SET Name=?, BirthDate=?, Farm_Id=?, IsDeleted=?, Username=?, Password=? WHERE Id=?", [Name, BirthDate, Farm_Id, IsDeleted, Username, Password, id]);
+        // Hash the password before storing it
+        const hashedPassword = await bcrypt.hash(Password, 10);
+        await pool.query("UPDATE Staff SET Name=?, BirthDate=?, IsDeleted=?, Username=?, Password=?, IdCardNumber=? WHERE Id=?", [Name, BirthDate, IsDeleted, Username, hashedPassword, IdCardNumber, id]);
         res.send("Registro de personal actualizado correctamente");
     } catch (err) {
         console.error(err);
@@ -48,6 +57,7 @@ export const updateStaff = async (req, res) => {
     }
 };
 
+// Delete staff
 export const deleteStaff = async (req, res) => {
     const id = req.params.id;
     try {
