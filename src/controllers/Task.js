@@ -1,3 +1,4 @@
+// controllers/Task.js
 import { pool } from "../db/db.js";
 
 // Get all tasks
@@ -15,7 +16,7 @@ export const getTasks = async (req, res) => {
 export const getTaskById = async (req, res) => {
     const id = req.params.id;
     try {
-        const [task] = await pool.query("SELECT * FROM Tasks WHERE Id = ?", [id]);
+        const [task] = await pool.query("SELECT * FROM Tasks WHERE Id = ? OR StaffId = ?", [id, id]);
         if (task.length > 0) {
             res.json(task[0]);
         } else {
@@ -27,11 +28,23 @@ export const getTaskById = async (req, res) => {
     }
 };
 
+// Get tasks by StaffId
+export const getTasksByStaffId = async (req, res) => {
+    const staffId = req.params.staffId;
+    try {
+        const [tasks] = await pool.query("SELECT * FROM Tasks WHERE StaffId = ?", [staffId]);
+        res.json(tasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error de servidor");
+    }
+};
+
 // Create a new task
 export const postTask = async (req, res) => {
-    const { Name, Description, Status, IsDeleted, Staff_Id } = req.body;
+    const { Name, Description, Status, IsDeleted, StaffId } = req.body;
     try {
-        await pool.query("INSERT INTO Tasks (Name, Description, Status, IsDeleted, Staff_Id) VALUES (?, ?, ?, ?, ?)", [Name, Description, Status, IsDeleted, Staff_Id]);
+        await pool.query("INSERT INTO Tasks (Name, Description, Status, IsDeleted, StaffId) VALUES (?, ?, ?, ?, ?)", [Name, Description, Status, IsDeleted, StaffId]);
         res.send("Tarea agregada correctamente");
     } catch (err) {
         console.error(err);
@@ -42,9 +55,9 @@ export const postTask = async (req, res) => {
 // Update a task
 export const updateTask = async (req, res) => {
     const id = req.params.id;
-    const { Name, Description, Status, IsDeleted, Staff_Id } = req.body;
+    const { Name, Description, Status, IsDeleted, StaffId } = req.body;
     try {
-        await pool.query("UPDATE Tasks SET Name=?, Description=?, Status=?, IsDeleted=?, Staff_Id=? WHERE Id=?", [Name, Description, Status, IsDeleted, Staff_Id, id]);
+        await pool.query("UPDATE Tasks SET Name=?, Description=?, Status=?, IsDeleted=?, StaffId=? WHERE Id=? OR StaffId=?", [Name, Description, Status, IsDeleted, StaffId, id, id]);
         res.send("Tarea actualizada correctamente");
     } catch (err) {
         console.error(err);
