@@ -12,16 +12,22 @@ export const getFarms = async (req, res) => {
 };
 
 export const postFarm = async (req, res) => {
-  const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate, UserId } = req.body; 
-  const Id = uuidv4(); 
-  try {
-      await pool.query("INSERT INTO Farms (Id, Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate, UserId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [Id, Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate, UserId]);
-      res.send("Record added successfully");
-  } catch (err) {
-      console.error('Error occurred:', err.message);
-      res.status(500).send("Server error");
-  }
+    const { Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate, UserId } = req.body;
+    const Id = uuidv4();
+    const isDeleted = 0; // Valor predeterminado para isDeleted
+
+    try {
+        await pool.query(
+            "INSERT INTO Farms (Id, Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate, UserId, isDeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [Id, Name, Location, PhoneNumber, OwnerName, OwnerLastname, OwnerId, OwnerBirthDate, UserId, isDeleted]
+        );
+        res.send("Registro agregado exitosamente");
+    } catch (err) {
+        console.error('Ocurrió un error:', err.message);
+        res.status(500).send("Error del servidor");
+    }
 };
+
 
 export const getFarmById = async (req, res) => {
     const id = req.params.id;
