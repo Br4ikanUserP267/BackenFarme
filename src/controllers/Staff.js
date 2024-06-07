@@ -21,7 +21,7 @@ export const getStaffByFarmId = async (req, res) => {
     try {
         const [staff] = await pool.query("SELECT * FROM Staff WHERE Id_farm = ?", [farmId]);
         if (staff.length > 0) {
-            res.json(staff[0]);
+            res.json(staff); // Return all staff members
         } else {
             res.status(404).send("Staff not found");
         }
@@ -30,6 +30,7 @@ export const getStaffByFarmId = async (req, res) => {
         res.status(500).send("Server error");
     }
 };
+
 // Add new staff
 export const postStaff = async (req, res) => {
     const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber, Id_farm } = req.body;
