@@ -1,16 +1,20 @@
 import express from 'express';
-import { getStaff, getStaffById, postStaff, updateStaff, deleteStaff } from '../controllers/Staff.js';
+import { getStaff, getStaffById, postStaff, updateStaff, deleteStaff, loginStaff, addFarmToStaff, getFarmsByStaffId } from '../controllers/Staff.js';
 
 const router = express.Router();
 
+// Staff routes
 router.get('/staff', getStaff);
-
 router.get('/staff/:id', getStaffById);
-
+router.post('/staff', postStaff);
+router.put('/staff/:id', updateStaff);
 router.delete('/staff/:id', deleteStaff);
 
-router.post('/staff', postStaff);
+// Login route
+router.post('/staff/login', loginStaff);
 
-router.put('/staff/:id', updateStaff);
+// Farm-Staff relationship routes
+router.post('/staff/farm', addFarmToStaff);
+router.get('/staff/:id/farms', getFarmsByStaffId);
 
 export default router;
