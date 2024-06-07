@@ -1,5 +1,5 @@
 import express from 'express';
-import { getStaff, getStaffById, postStaff, updateStaff, deleteStaff, loginStaff} from '../controllers/Staff.js';
+import { getStaff, getStaffById, postStaff, updateStaff, deleteStaff, loginStaff,getStaffByFarmId} from '../controllers/Staff.js';
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.get('/staff/:id', getStaffById);
 router.post('/staff', postStaff);
 router.put('/staff/:id', updateStaff);
 router.delete('/staff/:id', deleteStaff);
-
+router.get("/staff/:farmId",getStaffByFarmId)
 // Login route
 router.post('/staff/login', loginStaff);
 

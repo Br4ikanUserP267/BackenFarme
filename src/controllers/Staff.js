@@ -15,6 +15,21 @@ export const getStaff = async (req, res) => {
     }
 };
 
+//get by farmid
+export const getStaffByFarmId = async (req, res) => {
+    const farmId = req.params.farmId;
+    try {
+        const [staff] = await pool.query("SELECT * FROM Staff WHERE Id_farm = ?", [farmId]);
+        if (staff.length > 0) {
+            res.json(staff[0]);
+        } else {
+            res.status(404).send("Staff not found");
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server error");
+    }
+};
 // Add new staff
 export const postStaff = async (req, res) => {
     const { Name, BirthDate, IsDeleted, Username, Password, IdCardNumber, Id_farm } = req.body;
@@ -100,4 +115,3 @@ export const loginStaff = async (req, res) => {
     }
 };
 
-// Associate staff with a farm
